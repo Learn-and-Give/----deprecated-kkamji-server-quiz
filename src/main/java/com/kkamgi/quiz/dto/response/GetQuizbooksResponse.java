@@ -14,13 +14,14 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetQuizbooksResponse {
 
-    @ApiModelProperty(value = "이름", example = "1")
+    @ApiModelProperty(value = "문제집 아이디", example = "1")
     private final Long quizBookID;
 
-    @ApiModelProperty(value = "이름", example = "20")
+    @ApiModelProperty(value = "문제집 가격", example = "20")
     private final Integer quizBookPrice;
 
-    private final Integer isOwned;
+    @ApiModelProperty(value = "보유 여부", example = "true")
+    private final Boolean isOwned;
 
     @ApiModelProperty(value = "문제 수", example = "10")
     private final int quizCnt;
@@ -31,9 +32,9 @@ public class GetQuizbooksResponse {
     @ApiModelProperty(value = "단답형 문제 수", example = "4")
     private final Integer shortQuizCnt;
 
-    @ApiModelProperty(value = "서술형 문제 수", example = "[\"자바\", \"서술형\", \"객체지향\", \"플랫폼\", \"ERD\", ...]")
+    @ApiModelProperty(value = "서술형 문제 수", example = "4")
     private final Integer longQuizCnt;
 
-    @ApiModelProperty(value = "키워드", example = "4")
+    @ApiModelProperty(value = "키워드", example = "[\"자바\", \"서술형\", \"객체지향\", \"플랫폼\", \"ERD\", ...]")
     private final List<String> keywords;
 }

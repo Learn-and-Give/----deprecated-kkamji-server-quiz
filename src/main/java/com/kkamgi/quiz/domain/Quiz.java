@@ -4,6 +4,7 @@ import com.kkamgi.quiz.domain.data.QuizType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -41,5 +42,5 @@ public class Quiz {
     private Member Member;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
-    private List<QuizKeyword> quizKeywords;
+    private List<QuizKeyword> quizKeywords = new ArrayList<>();
 }

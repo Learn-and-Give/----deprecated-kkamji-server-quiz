@@ -3,6 +3,7 @@ package com.kkamgi.quiz.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,6 @@ public class Quizbook {
     private Integer price;
 
     @OneToMany(mappedBy = "quizbook", fetch = FetchType.LAZY)
-    private List<Quiz> quizs;
+    private List<Quiz> quizs = new ArrayList<>();
 }
 
