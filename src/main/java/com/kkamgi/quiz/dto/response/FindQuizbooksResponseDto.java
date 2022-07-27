@@ -1,7 +1,6 @@
 package com.kkamgi.quiz.dto.response;
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetQuizbooksResponse {
+public class FindQuizbooksResponseDto {
 
     @ApiModelProperty(value = "문제집 아이디", example = "1")
     private final Long quizBookID;

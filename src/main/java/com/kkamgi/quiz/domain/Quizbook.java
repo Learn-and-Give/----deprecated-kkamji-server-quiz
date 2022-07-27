@@ -23,5 +23,9 @@ public class Quizbook {
 
     @OneToMany(mappedBy = "quizbook", fetch = FetchType.LAZY)
     private List<Quiz> quizs = new ArrayList<>();
+
+    public int getNumberOfQuizs() {
+        return quizs.size();
+    }
 }
 
