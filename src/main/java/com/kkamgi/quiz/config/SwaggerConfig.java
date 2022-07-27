@@ -24,7 +24,7 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 public class SwaggerConfig {
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder()
-                .title("깜지. 회원 API")
+                .title("깜지. 퀴즈 API")
                 .description("학습자료 공유 기반 챌린지 서비스 플랫폼 깜지.의 퀴즈 시스템 API")
                 .build();
     }

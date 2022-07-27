@@ -4,9 +4,10 @@ import com.kkamgi.quiz.domain.Quiz;
 import com.kkamgi.quiz.domain.QuizKeyword;
 import com.kkamgi.quiz.domain.Quizbook;
 import com.kkamgi.quiz.domain.data.QuizType;
-import com.kkamgi.quiz.dto.response.GetQuizbooksResponse;
+import com.kkamgi.quiz.dto.response.FindQuizbooksResponseDto;
 import com.kkamgi.quiz.repository.PurchaseRepository;
 import com.kkamgi.quiz.repository.QuizbookRepository;
+import com.kkamgi.quiz.repository.SolveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,8 @@ public class QuizbookService {
     private final QuizbookRepository quizbookRepository;
     private final PurchaseRepository purchaseRepository;
 
-    public List<GetQuizbooksResponse> getQuizbooks(Long memberId) {
-        List<GetQuizbooksResponse> quizbooks = new ArrayList<>();
+    public List<FindQuizbooksResponseDto> findQuizbooks(Long memberId) {
+        List<FindQuizbooksResponseDto> quizbooks = new ArrayList<>();
         quizbookRepository.findAll().forEach(quizbook -> {
             // 보유 여부 확인
             boolean isPurchased = purchaseRepository.existsByMemberIdAndQuizbookId(memberId, quizbook.getId());
@@ -36,28 +37,37 @@ public class QuizbookService {
             }
 
             // 문제집 리스트 응답 개체 생성
-            GetQuizbooksResponse getQuizbooksResponse = GetQuizbooksResponse.builder()
-                    .quizBookID(quizbook.getId())
-                    .quizBookPrice(quizbook.getPrice())
-                    .quizCnt(quizbook.getQuizs().size())
-                    .choiceQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.SINGLE_CHOICE).count())
-                    .shortQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.SHORT_ANSWER).count())
-                    .longQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.LONG_ANSWER).count())
-                    .keywords(new ArrayList<String>(keywords))
-                    .isOwned(isPurchased)
+            FindQuizbooksResponseDto findQuizbooksResponseDto = FindQuizbooksResponseDto.builder()
+                    .quizBookID(quizbook.getId())               // 문제집 아이디
+                    .quizBookPrice(quizbook.getPrice())         // 문제집 가격
+                    .quizCnt(quizbook.getQuizs().size())        // 문제 개수
+                    .choiceQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.SINGLE_CHOICE).count())     // 객관식 문제 개수
+                    .shortQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.SHORT_ANSWER).count())       // 단답형 문제 개수
+                    .longQuizCnt((int) quizbook.getQuizs().stream().filter(quiz -> quiz.getType() == QuizType.LONG_ANSWER).count())         // 서술형 문제 개수
+                    .keywords(new ArrayList<String>(keywords))      // 키워드 리스트
+                    .isOwned(isPurchased)                           // 회원이 이 문제집을 보유하고 있는가
                     .build();
-                quizbooks.add(getQuizbooksResponse);
+                quizbooks.add(findQuizbooksResponseDto);
             });
-
-
-//        quizbookRepository.findAll().forEach(quizbook -> {
-//            System.out.println("test2:" + quizbook.getQuizs().stream().map(quiz -> quiz.getId()));
-//        });
 
         return quizbooks;
     }
 
-    public Optional<Quizbook> getQuizbook(Long quizbookId) {
+    public Optional<Quizbook> findOne(Long quizbookId) {
         return quizbookRepository.findById(quizbookId);
+    }
+
+    public List<Quiz> findQuizs(Quizbook quizbook) {
+        return quizbook.getQuizs();
+    }
+
+    public List<String> findTypesByQuizDistincs(List<Quiz> quizs) {
+        Set<String> types = new HashSet<String>();
+
+        quizs.forEach(quiz -> {
+            types.add(quiz.getType().toString());
+        });
+
+        return (List<String>) types;
     }
 }

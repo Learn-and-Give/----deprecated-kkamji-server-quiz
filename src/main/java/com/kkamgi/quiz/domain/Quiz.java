@@ -1,11 +1,16 @@
 package com.kkamgi.quiz.domain;
 
+import aj.org.objectweb.asm.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kkamgi.quiz.domain.data.QuizType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @ToString
@@ -43,4 +48,16 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     private List<QuizKeyword> quizKeywords = new ArrayList<>();
+
+    public Map<String, Object> getContent() {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> dataMap = new HashMap<>();
+        try {
+            dataMap = mapper.readValue(content, Map.class);
+        } catch (IOException e) {
+            dataMap.put("status", "ERROR");
+            e.printStackTrace();
+        }
+        return dataMap;
+    }
 }
