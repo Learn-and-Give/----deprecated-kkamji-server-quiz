@@ -3,8 +3,10 @@ package com.kkamgi.quiz.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
+@ToString
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,4 +19,8 @@ public class Quizbook {
 
     @Column(name = "price")
     private Integer price;
+
+    @OneToMany(mappedBy = "quizbook", fetch = FetchType.LAZY)
+    private List<Quiz> quizs;
 }
+

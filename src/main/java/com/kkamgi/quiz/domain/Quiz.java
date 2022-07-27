@@ -4,8 +4,10 @@ import com.kkamgi.quiz.domain.data.QuizType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
+@ToString
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,4 +39,7 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member Member;
+
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
+    private List<QuizKeyword> quizKeywords;
 }
