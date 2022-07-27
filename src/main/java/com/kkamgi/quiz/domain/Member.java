@@ -1,5 +1,6 @@
 package com.kkamgi.quiz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,8 +20,9 @@ public class Member {
     private String name;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "point")
-    private int point;
+    private Integer point;
 }
