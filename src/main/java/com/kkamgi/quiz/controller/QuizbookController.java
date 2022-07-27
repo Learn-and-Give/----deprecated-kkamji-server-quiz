@@ -62,20 +62,20 @@ public class QuizbookController {
             List<FindOneQuizResponseDto> findOneQuizResponseDtos = new ArrayList<>(quizs.size());
             for (Quiz quiz : quizs) {
                 findOneQuizResponseDtos.add(FindOneQuizResponseDto.builder()
-                        .quizID(quiz.getId())
-                        .quizType(quiz.getType().toString())
-                        .isSolved(solveService.isSolved(memberId, quiz.getId()))
-                        .quizContent(quiz.getContent())
+                        .quizID(quiz.getId())                                       // 퀴즈 아이디
+                        .quizType(quiz.getType().toString())                        // 퀴즈 유형
+                        .isSolved(solveService.isSolved(memberId, quiz.getId()))    // 풀었는지 여부
+                        .quizContent(quiz.getContent())                             // 퀴즈 문제 내용
                         .build());
             }
 
             // 문제집 정보 저장
             List<FindOneQuizResponseDto> list2 = new ArrayList<>(quizs.size());
             FindOneQuizbookResponseDto response = FindOneQuizbookResponseDto.builder()
-                    .isOwned(purchaseService.isPurchased(memberId, quizbookId))
-                    .quizNum(quizbook.getNumberOfQuizs())
+                    .isOwned(purchaseService.isPurchased(memberId, quizbookId))     // 문제집 보유 여부
+                    .quizNum(quizbook.getNumberOfQuizs())                           // 총 문제 수
                     .build();
-            response.setResult(findOneQuizResponseDtos);
+            response.setResult(findOneQuizResponseDtos);                            // 문제집에 문제 할당
 
             // 정상 응답
             return ResponseMapper.register(HttpStatus.OK, response);
