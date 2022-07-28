@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -34,11 +35,11 @@ public class QuizbookController {
     @ApiOperation(value = "문제집 리스트 조회", notes = "문제집 아이디, 가격, 보유 여부, 문제 수, 유형별 수, 키워드 리스트를 조회한다.")
     @ApiImplicitParam(name = "code", value = "로그인한 회원 코드", required = true, dataType = "String", paramType = "header", example = "0000")
     @GetMapping("/quizbooks")
-    public ResponseMapper<List<FindQuizbooksResponseDto>> getQuizbooks(@RequestHeader(value = "code") String code) {
+    public ResponseEntity<List<FindQuizbooksResponseDto>> getQuizbooks(@RequestHeader(value = "code") String code) {
         if (memberService.existsByPassword(code)) {     // 로그인 여부 확인
             Long memberId = memberService.findOne(code).get().getId();
-            return ResponseMapper.register(HttpStatus.OK, quizbookService.findQuizbooks(memberId));   // 정상 응답
-        } else return ResponseMapper.register(HttpStatus.BAD_REQUEST);      // 로그인 실패
+            return new ResponseEntity<>(quizbookService.findQuizbooks(memberId), HttpStatus.OK);   // 정상 응답
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);      // 로그인 실패
     }
 
     @ApiOperation(value = "문제집 상세 조회", notes = "문제집 아이디, 타입, 풂 여부, 총 문제 수, 문제 내용, 문제집 보유 여부를 조회한다.")
